@@ -6,7 +6,7 @@ Ari Pakman, Yueqi Wang, Catalin Mitelut, JinHyung Lee, Liam Paninski, [Discrete 
 <br/>
 
 <p align="center"> 
-<img width="800" src="assets/fig1.png">
+<img src="assets/fig1.png">
 </p>
 
 <p align="center"> 
@@ -16,7 +16,7 @@ Left: A detection module isolates multi-channel spike waveforms. The isolated wa
 <br/>
 
 <p align="center"> 
-<img width="800" src="assets/fig2.png">
+<img src="assets/fig2.png">
 </p>
 
 <p align="center"> 
