@@ -30,7 +30,7 @@ Left: A detection module isolates multi-channel spike waveforms. The isolated wa
 @misc{1901.00409,
 Author = {Ari Pakman and Yueqi Wang and Catalin Mitelut and JinHyung Lee and Liam Paninski},
 Title = {Discrete Neural Processes},
-Year = {2018},
+Year = {2019},
 Eprint = {arXiv:1901.00409},
 }
 ```
