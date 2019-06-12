@@ -1,5 +1,7 @@
-*saved_models/
+saved_models/
 data/
+train_log/
+outputs/
 
 
 # Byte-compiled / optimized / DLL files
