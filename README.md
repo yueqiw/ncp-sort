@@ -3,6 +3,14 @@ Spike sorting using the [Neural Clustering Process (NCP)](https://github.com/ari
 
 Ari Pakman, Yueqi Wang, Catalin Mitelut, JinHyung Lee, Liam Paninski, [Discrete Neural Processes](https://arxiv.org/abs/1901.00409), arXiv:1901.00409
 
+
+```
+# python 3.6
+pip install -r requirements.txt
+
+python -m ncpsort.train_ncp  # in the current directory
+```
+
 <br/>
 
 <p align="center"> 
