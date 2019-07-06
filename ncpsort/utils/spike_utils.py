@@ -1,9 +1,5 @@
 import numpy as np
-import os
-
 from scipy.signal import resample
-from scipy.spatial.distance import pdist, squareform
-
 from collections import defaultdict
 
 
@@ -14,7 +10,7 @@ def get_chan_nbrs(geom, nbr_dist=70, n_nbrs=7, keep_less_nbrs=False, chans_exclu
     Have the option to keep chennels with less than n_nbrs neightbors. 
 
     Args:
-        geom: A 2-D numpy array of shape (n_channels, 2) representing the XY coordinates of all channels.
+        geom: A numpy array of shape (n_channels, 2) representing the XY coordinates of all channels.
         nbr_dist: The maximum distance of surrounding channels (if n_nbr is None).
         n_nbrs: The number of surrounding channels (including the center). Ignores max_dist.
         keep_less_nbrs: a boolean choice of whether to keep channels with < n_nbr neighbors. 
@@ -53,7 +49,7 @@ def find_nbr_channels(geom, channel, n_nbr=None, max_dist=None):
     Includes the center channel. Also reorders the surrounding channels counter-clockwise. 
 
     Args:
-        geom: A 2-D numpy array of shape (n_channels, 2) representing the XY coordinates of all channels.
+        geom: A numpy array of shape (n_channels, 2) representing the XY coordinates of all channels.
         channel: The id of the center channel.
         n_nbr: The number of surrounding channels (including the center). Ignores max_dist.
         max_dist: The maximum distance of surrounding channels (if n_nbr is None).
@@ -88,8 +84,8 @@ def sort_spike_units(data_arr, assignments):
     """Sort the spike waveform array according to cluster assignments. 
 
     Args:
-        data_arr: A 2-D numpy array of shape (n_samples, waveform_len)
-        assignments: A 1-D numpy array (length = n_samples) of numeric cluster assignments   
+        data_arr: A numpy array of shape (n_samples, waveform_len)
+        assignments: A numpy array of shape (n_samples,) of numeric cluster assignments   
     Returns:
         data_arr: data_arr with the first dimension sorted by assignments
         assignments: sorted assignments
@@ -105,10 +101,10 @@ def vec_to_degree(vec):
     """Convert 2D vectors to angle in degrees. 
     
     Args:
-        vec: A 2-D numpy array of shape (n_pts, 2). Each row represents the relative 
+        vec: A numpy array of shape (n_pts, 2). Each row represents the relative 
             distance (dx, dy) of each point from the center.
     Returns:
-        A 1-D numpy array of length n_pts representing the counter-clockwise 
+        A numpy array of shape (n_pts,) representing the counter-clockwise 
             degree from 0 to 360 for each point.
     """
     x, y = vec
@@ -119,7 +115,7 @@ def vec_to_degree(vec):
     deg = np.degrees(atan)
     if x < 0:
         deg += 180
-    elif y < 0:  # x >= 0, y < 0
+    elif y < 0:  
         deg += 360
     return deg
 
@@ -136,10 +132,8 @@ def vec_to_degree(vec):
 def select_template_channels(templates, chans_and_nbrs):
     """Assign templates to their maximum-amplitude channels. Subset templates by selected channels. 
 
-
-
     Args:
-        templates: A 3-D numpy array of shape (n_templates, n_channels, n_timepoints).
+        templates: A numpy array of shape (n_templates, n_channels, n_timepoints).
             This is typically the template waveforms across the entire eletrode array. 
         channel_and_nbrs: A dict mapping of selected channels to their neighbors.  
     Return:
@@ -182,16 +176,15 @@ def create_upsampled_templates(templates, idx_templates, selected_chans, upsampl
     1/upsample, 2/upsample, 3/upsample... finally downsample to the original time resolution. 
 
     Args:
-        templates: A 3-D numpy array of shape (n_templates, n_channels, n_timepoints) 
+        templates: A numpy array of shape (n_templates, n_channels, n_timepoints) 
             representing all template waveforms. 
         idx_templates: A numpy array of selected template IDs
         selected_chans: A list of numpy arrays, in which each element is an numpy array of 
             selected channels corresponding to the template ids. 
         upsample: integer Factor of upsampling. 
     Returns:
-        templates_resampled: A 4-D numpy array of upsampled, shifted and then downsampled templates. 
+        templates_resampled: A numpy array of upsampled, shifted and then downsampled templates. 
     """
-
     templates_resampled = resample(
         templates, templates.shape[2] * upsample, axis=2, window=0)
     n_nbrs = selected_chans.shape[1]
@@ -211,20 +204,22 @@ def create_upsampled_templates(templates, idx_templates, selected_chans, upsampl
 
 
 def subset_spike_time_by_templates(spike_time_labels, template_ids):
-    """
+    """Subset spike times by template IDs
+    
     Args:
-        spike_time_labels: [n_spikes, 2] each row (time, template_id)
+        spike_time_labels: A numpy array of shape (n_spikes, 2), each row is [time, template_id]
         template_ids: list of template ids
     Return:
-        a subset of spike_time_labels that only contains the target templates.
+        a subset of spike_time_labels that only contain the target templates.
     """
     return spike_time_labels[np.isin(spike_time_labels[:, 1], template_ids)]
 
 
 def subset_spike_time_by_channel(spike_time_labels, channel_id):
-    """
+    """Subset spike times by specific channel ID
+    
     Args:
-        spike_time_labels: [n_spikes, 2] each row (time, channel_id)
+        spike_time_labels: A numpy array of shape (n_spikes, 2), each row is [time, channel_id]
         channel_id: int, channel_id
     Return:
         a subset of spike_time_labels from a particular channel.
@@ -233,9 +228,18 @@ def subset_spike_time_by_channel(spike_time_labels, channel_id):
 
 
 def template_window(templates, n_timesteps, offset):
+    """Slice a window from full-length templates
+    
+    Args:
+        templates: A numpy array of shape (n_templates, time_length, n_channels)
+        n_timesteps: the length of template window
+        offset: the offset of template window
+    Return:
+        sliced templates
+    """
     time_length = templates.shape[1]
-    start = (time_length - n_timesteps) // 2 + \
-        offset  # take the middle chunk with offset
+    start = (time_length - n_timesteps) // 2 + offset  
+    # take the middle chunk with offset
     end = start + n_timesteps
     templates = templates[:, start:end, :]
     return templates

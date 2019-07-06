@@ -5,12 +5,19 @@ from torch.utils.data import Dataset
 from ncpsort.utils.data_readers import load_waveform_by_spike_time
 
 class SpikeRawDatasetByChannel(Dataset):
-    """
-    n_nbr channels surroundinng the center.
+    """Create a Pytorch dataset of spike waveforms from raw recordings 
+
+    Loads selected spikes in selected channels with fixed time window from raw voltage file
+
+    Attributes:
+        waveforms: A torch array of shape (n_spikes, n_channels, n_timesteps)
+        unit_assignments: A numpy array of shape (n_spikes,) of unit assignments (cluster IDs) for the spikes
+        spike_time: A numpy array of shape (n_spikes,) of the original spike time
+        n_units: The number of ground truth units (clusters)
     """
     def __init__(self, voltage_file, channels, spike_time_labels, total_channels, 
                 n_timesteps=None, time_offset=-30, start_idx=0, end_idx=-1, verbose=True):
-        """
+        """Load the dataset and create torch array 
         Args:
             voltage_file: a ".bin" file of the recording from all channels
             channels: a list of channels to load
@@ -47,18 +54,14 @@ class SpikeRawDatasetByChannel(Dataset):
             self.n_timesteps = time_length
 
         self.template_ids = np.unique(self.template_assignments)
-        
         self.n_units = len(self.template_ids)
         self.unit_ids = np.arange(self.n_units, dtype=int)
         self.template_to_unit = {t: u for t, u in zip(self.template_ids, self.unit_ids)}
         self.unit_assignment = np.vectorize(self.template_to_unit.get)(self.template_assignments)
-
         print('Number of ground truth units:', self.n_units)
 
         self.waveforms = torch.from_numpy(self.waveforms)
-        
         self.data_shape = self.waveforms.shape
-        # [n_spikes, n_nbr, n_timesteps]
         print('Waveform shape:', self.data_shape)
     
     def __len__(self):
@@ -69,10 +72,11 @@ class SpikeRawDatasetByChannel(Dataset):
 
         
 class SpikeDataGenerator():
-
+    """Generate minibatches of spike waveforms from a spike Dataset object
+    """
     def __init__(self, dataset, params=None):
         """
-        dataset: SpikeFeatureDataset or SpikeRawDataset
+        dataset: a Dataset object of spike waveforms
         """
         self.params = params 
         self.dataset = dataset
@@ -80,7 +84,17 @@ class SpikeDataGenerator():
         self.feature_dim = self.dataset.data_shape[1:]
     
     def generate(self, N, batch_size=1, seed=None):
-
+        """Randomly select a given number of spike waveforms from the dataset
+        
+        Args:
+            N: the number of spikes in each batch
+            batch_size: number of minibatches
+            seed: random seed
+        Returns:
+            data: A torch array of shape (batch_size, N, n_channels, n_timesteps) of spike waveforms
+            assignments: a numpy array of shape (batch_size, N) of cluster assignements
+            spike_time: a numpy array of shape (batch_size, N) of the original spike times
+        """
         data = torch.empty([batch_size, N, *self.feature_dim], dtype=torch.float32)
         assignments =  np.empty([batch_size, N], dtype=np.int32)
         template_assignments =  np.empty([batch_size, N], dtype=np.int32)
@@ -97,4 +111,4 @@ class SpikeDataGenerator():
         if hasattr(self.dataset, "spike_time"):
             spike_time = self.dataset.spike_time[dataset_indices]
 
-        return data, assignments, spike_time  # other 
+        return data, assignments, spike_time
