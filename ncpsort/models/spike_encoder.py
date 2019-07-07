@@ -4,13 +4,22 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class NCP_SpikeEncoder():
+    """Transform spike waveforms by the encoder of a trained NCP model
+    """
     def __init__(self, model):
-        model.eval()
+        """Load model parameters
+        Args:
+            model: a trained NCP model in model.eval() mode
+        """
         self.model = model
         self.h_dim = model.params['h_dim']
         self.device = model.params['device']
 
     def encode(self, data):
+        """Transform the spike waveform by the NCP encoder
+        Args:
+            data: a torch array of shape (batch_size, N, n_channels, n_timesteps)
+        """
         self.batch_size = data.shape[0]
         self.N = data.shape[1]
 
@@ -22,7 +31,7 @@ class NCP_SpikeEncoder():
 
 
 class BasicBlock(nn.Module):
-    """
+    """The basic block module of 1D ResNet
     based on https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py
     """
 
@@ -49,6 +58,9 @@ class BasicBlock(nn.Module):
 
 
 class ResNet1DEncoder(nn.Module):
+    """A 1D ResNet for time series data 
+    based on https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py
+    """
     def __init__(self, block, num_blocks, out_size=256, input_dim=7, planes=32):
         super(ResNet1DEncoder, self).__init__()
         self.in_planes = planes

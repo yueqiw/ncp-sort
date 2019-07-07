@@ -76,7 +76,8 @@ class SpikeDataGenerator():
     """
     def __init__(self, dataset, params=None):
         """
-        dataset: a Dataset object of spike waveforms
+        Args:
+            dataset: a Dataset object of spike waveforms
         """
         self.params = params 
         self.dataset = dataset

@@ -4,15 +4,16 @@ based on https://github.com/aripakman/neural_clustering_process
 '''
 
 import torch
+from torch import nn
 from ncpsort.models.spike_encoder import ResNet1DEncoder, BasicBlock
 from ncpsort.utils.clustering import relabel
 
 
-class NeuralClustering(nn.Module):
+class NCP_Trainer(nn.Module):
     """The Neural CLustering Process model class for training.
     """
     def __init__(self, params):
-        super(NeuralClustering, self).__init__()
+        super(NCP_Trainer, self).__init__()
 
         self.params = params
         self.previous_n = 0
@@ -68,7 +69,7 @@ class NeuralClustering(nn.Module):
         Elements after the n-th are not assigned
 
         Args:
-            data: A numpy array of shape (batch_size, N_total, x_dim)
+            data: A torch array of shape (batch_size, N_total, n_channels, n_timesteps)
             cs: A numpy array of assigned clusters 
             n: the index of the current element
         """

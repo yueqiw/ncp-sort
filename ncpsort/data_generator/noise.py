@@ -1,5 +1,5 @@
 '''
-based on https://github.com/paninski-lab/yass
+based on the noise model of https://github.com/paninski-lab/yass
 '''
 
 import numpy as np
@@ -36,26 +36,27 @@ def make_noise(n, spatial_SIG, temporal_SIG):
     return the_noise
 
 def make_noise_torch(n, spatial_SIG, temporal_SIG):
-    """Make noise
+    """Make noise in Pytorch
 
     Parameters
     ----------
     n: int
         Number of noise events to generate
-    spatial_SIG, temporal_SIG: torch arrays 
+    spatial_SIG: torch array
+        Spatial covariance matrix
+    temporal_SIG: torch array 
+        Temporal covariance matrix
     Returns
     ------
-    numpy.ndarray
+    torch array 
         Noise
     """
     n_neigh, _ = spatial_SIG.shape
     waveform_length, _ = temporal_SIG.shape
 
     # get noise
-    # noise = torch.normal(torch.zeros(*(n, waveform_length, n_neigh)), torch.ones(*(n, waveform_length, n_neigh)))
     dist = torch.distributions.normal.Normal(0.0, 1.0)
     noise = dist.sample(sample_shape=(n, waveform_length, n_neigh))
-    #noise = torch.from_numpy(np.random.normal(size=(n, waveform_length, n_neigh)).astype(np.float32))
 
     # multiple random gaussian; then multiply by covariance
     for c in range(n_neigh):
@@ -95,8 +96,6 @@ def kill_signal(recordings, threshold, window_size):
         
         # get obserations where observation is above threshold 
         idx_temp = np.where(np.abs(recordings[:, c]) > threshold)[0]
-        # idx_temp = np.where(recordings[:, c] > threshold)[0]
-        # print(c, idx_temp.shape)
         # shift every index found
         for j in range(-R, R+1):
 
@@ -182,8 +181,6 @@ def noise_cov(recordings, temporal_size, window_size, sample_size=1000,
     w, v = np.linalg.eig(np.cov(noise_wf.T))
 
     temporal_SIG = np.matmul(np.matmul(v, np.diag(np.sqrt(w))), v.T)
-    # np.save("/home/yueqi/Dropbox/lib/discrete_neural_process/experiments/spike_sorting/noise_cov_spatial_no_abs.npy", spatial_SIG)
-    # np.save("/home/yueqi/Dropbox/lib/discrete_neural_process/experiments/spike_sorting/noise_cov_temporal_no_abs.npy", temporal_SIG)
     return spatial_SIG, temporal_SIG
 
 
