@@ -20,7 +20,8 @@ class MFM_generator():
             poisson_lambda: The lambda parameter of shifted Poisson distribution (prior for the number of clusters)
             dirichlet_alpha: The alpha parameter of Dirichlet distribution (prior for cluster proportions)
         """
-        assert Nmin > 0 and Nmax > Nmin
+        if Nmin is not None and Nmax is not None:
+            assert Nmin > 0 and Nmax > Nmin
         self.Nmin = Nmin
         self.Nmax = Nmax
         self.maxK = maxK
