@@ -4,7 +4,8 @@ import os
 
 
 def load_bin(fname, start_time, N_CHAN, chunk_len, d_type='float32'):
-    # load raw data
+    """Load Raw data
+    """
     with open(fname, 'rb') as fin:
         if d_type=='float32':
             fin.seek(start_time * 4 * N_CHAN, os.SEEK_SET)
@@ -21,16 +22,16 @@ def load_bin(fname, start_time, N_CHAN, chunk_len, d_type='float32'):
 
 
 def binary_reader_waveforms(filename, n_channels, n_times, spikes, channels=None, data_type='float32'):
-    ''' Reader for loading raw binaries
+    """Reader for loading raw binaries
     
+    Args:
         standardized_filename:  name of file contianing the raw binary
         n_channels:  number of channels in the raw binary recording 
         n_times:  length of waveform 
         spikes: 1D array containing spike times in sample rate of raw data
         channels: load specific channels only
         data_type: float32 for standardized data
-    '''
-
+    """
     if channels is None:
         wfs = np.zeros((spikes.shape[0], n_times, n_channels), data_type)
         channels = np.arange(n_channels)
@@ -50,10 +51,12 @@ def binary_reader_waveforms(filename, n_channels, n_times, spikes, channels=None
     return wfs
 
 def load_waveform(voltage_file, spike_index_all, spike_channel, load_channels=None, n_channels=49, n_times=61):
-    """
-    voltage_file: standardized voltages file .bin
-    spike_index_all: [n_spikes, 2] each row (time, channel)
-    spike_channel: which channel on the electrode array 
+    """Load data
+
+    Args:
+        voltage_file: standardized voltages file .bin
+        spike_index_all: [n_spikes, 2] each row (time, channel)
+        spike_channel: which channel on the electrode array 
     """
     # select detected spikes on the desired channel
     spike_index = spike_index_all[spike_index_all[:,1]==spike_channel]
@@ -69,13 +72,14 @@ def load_waveform(voltage_file, spike_index_all, spike_channel, load_channels=No
 
 def load_waveform_by_spike_time(voltage_file, spike_times, time_offset=-30, load_channels=None, 
                                 n_channels=49, n_times=61):
-    """
-    voltage_file: standardized voltages file .bin
-    spike_times: [n_spikes,] 
-    time_offset: time offset for spike peak 
-    load_channels: which channels on the electrode array to load
-    """
+    """Load data by spike time
 
+    Args:
+        voltage_file: standardized voltages file .bin
+        spike_times: [n_spikes,] 
+        time_offset: time offset for spike peak 
+        load_channels: which channels on the electrode array to load
+    """
     # spike times in sample time; may need to shift the template a bit
     spikes = spike_times + time_offset
 
@@ -86,7 +90,7 @@ def load_waveform_by_spike_time(voltage_file, spike_times, time_offset=-30, load
     return waveforms
 
 
-def add_stuff_to_npz(npz_path, new_data):
+def add_data_to_npz(npz_path, new_data):
     assert(isinstance(new_data, dict))
     npz = np.load(npz_path)
     data = {name: npz[name] for name in npz.files}
