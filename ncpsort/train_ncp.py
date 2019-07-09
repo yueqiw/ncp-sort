@@ -1,4 +1,9 @@
 
+'''Train NCP model on synthetic data 
+Usage:
+    python -m ncpsort.train_ncp
+    python -m ncpsort.train_ncp saved_models/partially_trained_checkpoint.pt
+'''
 
 import numpy as np
 import torch
@@ -19,11 +24,6 @@ from ncpsort.utils.plotting import plot_avgs, plot_spike_clusters_and_gt_in_rows
 
 from ncpsort.config.train_config import params
 from ncpsort.config.data_config import data_config
-
-'''
-python -m ncpsort.train_ncp
-python -m ncpsort.train_ncp saved_models/partially_trained_checkpoint.pt
-'''
 
 
 def get_data_generator(params, data_config):
