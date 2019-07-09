@@ -2,6 +2,8 @@ saved_models/
 data/
 train_log/
 outputs/
+.vscode/
+inference*/
 
 
 # Byte-compiled / optimized / DLL files
