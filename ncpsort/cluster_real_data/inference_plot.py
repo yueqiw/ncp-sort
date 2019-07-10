@@ -51,7 +51,7 @@ if __name__ == "__main__":
         # template: (151, 61, 49) [n_templates, n_times, n_channels]
         # transpose to (151, 49, 61) [n_templates, n_channels, n_times]
     elif templates_name == "ks2-190430":
-        infer_params['template_file'] = os.path.expanduser("data/data_190430_non-triaged_and_kilosort/kilosort2/templates_reloaded.npy")
+        infer_params['template_file'] = os.path.expanduser("data/data_49ch/non-triaged_190430/kilosort2/templates_reloaded.npy")
         templates = np.load(infer_params['template_file']).transpose(2,1,0)
         # template: (61, 49, 143) [n_times, n_channels, n_templates]
         # transpose to (151, 49, 61) [n_templates, n_channels, n_times]
