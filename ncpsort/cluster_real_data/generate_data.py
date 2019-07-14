@@ -2,6 +2,7 @@
 """Generate real data subsets for clustering 
 Usage:
     python -m ncpsort.cluster_real_data.generate_data \
+        inference_real_data
         --N 1000 --n_seeds 1 --do_corner_padding
     or  --channel_end_idx 1000 --do_corner_padding
     or  --global_end_idx 90781 (e.g. one minute) --do_corner_padding
@@ -17,6 +18,7 @@ from ncpsort.utils.spike_utils import get_chan_nbrs, subset_spike_time_by_channe
 
 parser = argparse.ArgumentParser(
     description='Generate spike data for NCP inference.')
+parser.add_argument('output_dir', type=str)
 parser.add_argument('--N', type=int, default=0)  # n = 0 for all spikes
 parser.add_argument('--n_seeds', type=int, default=1)
 parser.add_argument('--channel_end_idx', type=int, default=-1)
@@ -31,7 +33,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     infer_params = {}
-    infer_params['data_name'] = 'inference_49ch_no_triage'
+    infer_params['data_name'] = args.output_dir
     infer_params["spike_time_raw_no_triage"] = "data/data_49ch/non-triaged_190430/spike_index_all_no-knn-triage.npy"
     infer_params['geom_file'] = 'data/data_49ch/ej49_geometry1.txt'
     infer_params['voltage_file'] = 'data/data_49ch/preprocessing/standardized.bin'

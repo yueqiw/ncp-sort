@@ -4,7 +4,7 @@ Usage:
     python -m ncpsort.cluster_real_data.inference_encoder_only \
         input_dir checkpoint_iter 
 
-    e.g. input_dir = inference_49ch_no_triage_N-1000_pad, checkpoint_iter = 18600
+    e.g. input_dir = inference_real_data_N-1000_pad, checkpoint_iter = 18600
 """
 
 import numpy as np

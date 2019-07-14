@@ -5,7 +5,7 @@ Usage:
         input_dir checkpoint_iter --S 150 --beam --topn 2
     or  input_dir checkpoint_iter --S 1500 --topn 2
 
-    e.g. input_dir = inference_49ch_no_triage_N-1000_pad, checkpoint_iter = 18600
+    e.g. input_dir = inference_real_data_N-1000_pad, checkpoint_iter = 18600
 """
 
 import numpy as np

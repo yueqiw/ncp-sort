@@ -2,7 +2,8 @@
 """Generate synthetic datasets for clustering
 Usage:
     python -m ncpsort.cluster_synthetic_data.generate_synthetic_data \
-        --N 1000 --n_seeds 1
+        inference_synthetic
+        --N 1000 --n_seeds 10
 """
 
 import numpy as np
@@ -17,6 +18,7 @@ from ncpsort.utils.data_readers import load_bin
 
 parser = argparse.ArgumentParser(
     description='Generate spike data for NCP inference.')
+parser.add_argument('output_dir', type=str)
 parser.add_argument('--N', type=int, default=0)
 parser.add_argument('--n_seeds', type=int, default=1)
 
@@ -27,7 +29,7 @@ if __name__ == "__main__":
 
     infer_params = {}
     infer_params['N'] = args.N
-    infer_params['data_name'] = 'inference_49ch_synthetic'
+    infer_params['data_name'] = args.output_dir
     infer_params['template_file'] = "data/data_512ch/templates_post_deconv_pre_merge_2007_512chan.npy"
     infer_params['geom_file'] = 'data/data_512ch/retinal_20min_geometry_2007_512chan.txt'
     infer_params['channels_exclude'] = 'data/data_512ch/chans_512_array_that_map_to_49chan_array.npy'
