@@ -47,7 +47,7 @@ if __name__ == "__main__":
     infer_params['template_offset'] = 0
     if templates_name == "yass-190322":
         infer_params['template_file'] = "data/data_49ch/templates_cluster_data1_allset_49chan.npy"
-        templates = np.load(infer_params['yass_template_file']).transpose(0,2,1)
+        templates = np.load(infer_params['template_file']).transpose(0,2,1)
         # template: (151, 61, 49) [n_templates, n_times, n_channels]
         # transpose to (151, 49, 61) [n_templates, n_channels, n_times]
     elif templates_name == "ks2-190430":
