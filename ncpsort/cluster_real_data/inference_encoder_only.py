@@ -18,8 +18,10 @@ from ncpsort.models.trainer_model import NCP_Trainer
 from ncpsort.models.spike_encoder import NCP_SpikeEncoder
 
 parser = argparse.ArgumentParser(description='Run NCP encoder on spikes.')
-parser.add_argument('input_dir', type=str)
-parser.add_argument('checkpoint_iter', type=int) 
+parser.add_argument('input_dir', type=str,
+                    help="name of the directory that stores the generated data.")
+parser.add_argument('checkpoint_iter', type=int,
+                    help="the final iteration of the trained model checkpoint.")
 
 if __name__ == "__main__":
     args = parser.parse_args()

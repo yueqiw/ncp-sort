@@ -19,7 +19,7 @@ from ncpsort.utils.plotting import plot_spike_clusters_and_gt_in_rows
 from ncpsort.utils.plotting import plot_spike_clusters_and_templates_overlay
 from ncpsort.utils.plotting import plot_raw_and_encoded_spikes_tsne
 
-
+# TODO: make the plotting script easier to use. 
 parser = argparse.ArgumentParser(description='Plot inference results.')
 parser.add_argument('inference_dir', type=str)
 parser.add_argument('--templates', dest="templates_name", type=str, default="ks2-190430")

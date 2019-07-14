@@ -20,11 +20,16 @@ from ncpsort.models.sampler_model import NCP_Sampler
 from ncpsort.utils.clustering import cluster_spikes_ncp, get_topn_clusters
 
 parser = argparse.ArgumentParser(description='Run NCP inference on spikes.')
-parser.add_argument('input_dir', type=str) 
-parser.add_argument('checkpoint_iter', type=int) 
-parser.add_argument('--S', type=int, default=150, help="number of parallel samples")
-parser.add_argument('--beam', action='store_const', default=False, const=True)
-parser.add_argument('--topn', type=int, default=2)
+parser.add_argument('input_dir', type=str,
+                    help="name of the directory that stores the generated data.") 
+parser.add_argument('checkpoint_iter', type=int,
+                    help="the final iteration of the trained model checkpoint.")
+parser.add_argument('--S', type=int, default=150,
+                    help="number of parallel samples (clustering runs).")
+parser.add_argument('--beam', action='store_const', default=False, const=True,
+                    help="if true, do beam search rather than random sampling.")
+parser.add_argument('--topn', type=int, default=2,
+                    help="stores the top n clustering results for easy access (actually all results are stored).")
 
 
 if __name__ == "__main__":

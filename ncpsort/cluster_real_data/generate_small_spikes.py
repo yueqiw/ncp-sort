@@ -2,10 +2,10 @@
 """Generate real data subsets (small spikes) for clustering 
 Usage:
     python -m ncpsort.cluster_real_data.generate_small_spikes \
-        inference_small_spikes
+        output_dir (e.g. inference_small_spikes)
         --N 1000 --n_seeds 1 --do_corner_padding
     or  --channel_end_idx 1000 --do_corner_padding
-    or  --global_end_idx 90781 (e.g. one minute) --do_corner_padding
+    or  --global_end_idx 90781 (one minute) --do_corner_padding
 """
 
 import numpy as np
@@ -18,14 +18,21 @@ from ncpsort.utils.spike_utils import get_chan_nbrs, subset_spike_time_by_channe
 
 parser = argparse.ArgumentParser(
     description='Generate spike data for NCP inference.')
-parser.add_argument('output_dir', type=str)
-parser.add_argument('--N', type=int, default=0)  # n = 0 for all spikes
-parser.add_argument('--n_seeds', type=int, default=1)
-parser.add_argument('--channel_end_idx', type=int, default=-1)
-parser.add_argument('--global_start_idx', type=int, default=0)
-parser.add_argument('--global_end_idx', type=int, default=-1)
+parser.add_argument('output_dir', type=str,
+                    help="name of the directory that stores the generated data.")
+parser.add_argument('--N', type=int, default=0,
+                    help="how many spikes to subset from the data source. If n=0, extract all spikes")
+parser.add_argument('--n_seeds', type=int, default=1,
+                    help="if > 1, repeate the data subsetting with different random seeds.")
+parser.add_argument('--channel_end_idx', type=int, default=-1,
+                    help="if > 0, load the first end_idx spikes from each channel. no random subset.")
+parser.add_argument('--global_start_idx', type=int, default=0,
+                    help="the spike index of the entire recording to start loading spikes.")
+parser.add_argument('--global_end_idx', type=int, default=-1,
+                    help="the spike index of the entire recording to stop loading spikes.")
 parser.add_argument('--do_corner_padding',
-                    action="store_const", const=True, default=False)
+                    action="store_const", const=True, default=False,
+                    help="if true, pad zeros for empty neighbor channels (outside the array border).")
 
 if __name__ == "__main__":
 

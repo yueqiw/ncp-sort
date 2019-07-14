@@ -2,7 +2,7 @@
 """Generate synthetic datasets for clustering
 Usage:
     python -m ncpsort.cluster_synthetic_data.generate_synthetic_data \
-        inference_synthetic
+        output_dir (e.g. inference_synthetic)
         --N 1000 --n_seeds 10
 """
 
@@ -18,9 +18,12 @@ from ncpsort.utils.data_readers import load_bin
 
 parser = argparse.ArgumentParser(
     description='Generate spike data for NCP inference.')
-parser.add_argument('output_dir', type=str)
-parser.add_argument('--N', type=int, default=0)
-parser.add_argument('--n_seeds', type=int, default=1)
+parser.add_argument('output_dir', type=str,
+                    help="name of the directory that stores the generated data.")
+parser.add_argument('--N', type=int, default=0,
+                    help="how many spikes to subset from the data source. If n=0, extract all spikes")
+parser.add_argument('--n_seeds', type=int, default=1,
+                    help="if > 1, repeate the data subsetting with different random seeds.")
 
 
 if __name__ == "__main__":
