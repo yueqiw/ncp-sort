@@ -1,8 +1,4 @@
 
-'''
-based on https://github.com/aripakman/neural_clustering_process
-'''
-
 import torch
 import numpy as np
 from torch.distributions import Categorical
@@ -10,6 +6,8 @@ from torch.distributions import Categorical
 
 class NCP_Sampler():
     """The Neural Clustering Process model for inference. 
+    
+    based on https://github.com/aripakman/neural_clustering_process
     """
     def __init__(self, model, data):
         """Load a trained NCP model and new spike waveform data

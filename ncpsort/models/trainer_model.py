@@ -1,7 +1,4 @@
 
-'''
-based on https://github.com/aripakman/neural_clustering_process
-'''
 
 import torch
 from torch import nn
@@ -11,6 +8,8 @@ from ncpsort.utils.clustering import relabel
 
 class NCP_Trainer(nn.Module):
     """The Neural CLustering Process model class for training.
+    
+    based on https://github.com/aripakman/neural_clustering_process
     """
     def __init__(self, params):
         super(NCP_Trainer, self).__init__()

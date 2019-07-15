@@ -1,5 +1,8 @@
 
 '''Train NCP model on synthetic data 
+
+Based on https://github.com/aripakman/neural_clustering_process
+
 Usage:
     python -m ncpsort.train_ncp --n_iter 10000
     or 
