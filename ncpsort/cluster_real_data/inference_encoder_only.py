@@ -2,9 +2,9 @@
 """Run the spike encoder of a trained NCP model
 Usage:
     python -m ncpsort.cluster_real_data.inference_encoder_only \
-        input_dir checkpoint_iter 
+        $input_dir $checkpoint_name 
 
-    e.g. input_dir = inference_real_data_N-1000_pad, checkpoint_iter = 18600
+    e.g. input_dir = 'inference_real_data_N-1000_pad', checkpoint_name = 'NCP_18600'
 """
 
 import numpy as np
@@ -20,14 +20,14 @@ from ncpsort.models.spike_encoder import NCP_SpikeEncoder
 parser = argparse.ArgumentParser(description='Run NCP encoder on spikes.')
 parser.add_argument('input_dir', type=str,
                     help="name of the directory that stores the generated data.")
-parser.add_argument('checkpoint_iter', type=int,
-                    help="the final iteration of the trained model checkpoint.")
+parser.add_argument('checkpoint_name', type=str,
+                    help="the file name of the trained model checkpoint.")
 
 if __name__ == "__main__":
     args = parser.parse_args()
 
     it_use = args.checkpoint_iter
-    pretrained_path = "./saved_models/{}_{}.pt".format(params['model'], it_use)
+    pretrained_path = "./saved_models/{}.pt".format(args.checkpoint_name)
 
     input_dir = args.input_dir
     if not os.path.isdir(input_dir):

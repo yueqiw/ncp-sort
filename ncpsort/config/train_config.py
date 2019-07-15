@@ -1,6 +1,6 @@
 
 params = {
-    'model': 'SpikeTemplate',  # model name
+    'model_name': 'NCP',  # model name
     'cluster_generator': "MFM",  # or CRP
     'maxK': 12,  # max number of clusters to generate 
 

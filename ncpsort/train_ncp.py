@@ -1,16 +1,16 @@
 
 '''Train NCP model on synthetic data 
 Usage:
-    python -m ncpsort.train_ncp
-    python -m ncpsort.train_ncp saved_models/partially_trained_checkpoint.pt
+    python -m ncpsort.train_ncp --n_iter 10000
+    python -m ncpsort.train_ncp --n_iter 10000 --saved_checkpoint saved_models/NCP_5000.pt
 '''
 
 import numpy as np
 import torch
 import time
 import os
-import sys
 import pickle
+import argparse
 
 from ncpsort.models.trainer_model import NCP_Trainer
 from ncpsort.models.sampler_model import NCP_Sampler
@@ -25,6 +25,11 @@ from ncpsort.utils.plotting import plot_avgs, plot_spike_clusters_and_gt_in_rows
 from ncpsort.config.train_config import params
 from ncpsort.config.data_config import data_config
 
+parser = argparse.ArgumentParser(description="Train NCP model on synthetic data.")
+parser.add_argument('--n_iter', type=int, default=10000,
+                    help="number of training iterations.")
+parser.add_argument('--saved_checkpoint', type=str, default=None,
+                    help="if provided (as file path), continue training from the checkpoint.")
 
 def get_data_generator(params, data_config):
 
@@ -103,7 +108,15 @@ def get_data_generator(params, data_config):
     return data_generator
 
 
-def train(params, data_generator):
+if __name__ == "__main__":
+
+    args = parser.parse_args()
+
+    # loads params from train_config.py as a python dictionary
+    params['device'] = torch.device(
+        "cuda:0" if torch.cuda.is_available() else "cpu")
+
+    data_generator = get_data_generator(params, data_config)
 
     # parameterize the model for training 
     ncp_model = NCP_Trainer(params).to(params['device'])
@@ -128,8 +141,8 @@ def train(params, data_generator):
 
     #########################
     # resume from partially trainded model
-    if (len(sys.argv) > 1):
-        model_checkpoint = sys.argv[1]
+    if args.saved_checkpoint is not None:
+        model_checkpoint = args.saved_checkpoint
         checkpoint = torch.load(model_checkpoint)
         ncp_model.load_state_dict(checkpoint['model_state_dict'])
         ncp_model.to(params['device'])
@@ -142,10 +155,10 @@ def train(params, data_generator):
     #########################
 
     # total number of iterations
-    it_terminate = 20000
+    it_terminate = args.n_iter
 
     # at these points decrease learning rate by lr_decay
-    milestones = [10000, 17000]
+    milestones = [it_terminate // 2, it_terminate * 7 // 8]
     lr_decay = 0.5
 
     # a callback-function to schedule the LR decay
@@ -165,7 +178,7 @@ def train(params, data_generator):
     if not os.path.isdir('train_log'):
         os.mkdir('train_log')
 
-    model_name = params['model']
+    model_name = params['model_name']
 
     # set the model parameters to the training mode (vs. eval mode)
     ncp_model.train()
@@ -321,9 +334,4 @@ def train(params, data_generator):
                     break
 
 
-if __name__ == "__main__":
-    # loads params from train_config.py as a python dictionary
-    params['device'] = torch.device(
-        "cuda:0" if torch.cuda.is_available() else "cpu")
-    data_generator = get_data_generator(params, data_config)
-    train(params, data_generator)
+

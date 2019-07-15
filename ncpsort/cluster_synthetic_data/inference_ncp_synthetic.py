@@ -2,10 +2,10 @@
 """Perform inference (clustering) using a trained NCP model on synthetic data 
 Usage:
     python -m ncpsort.cluster_synthetic_data.inference_ncp_synthetic \
-        input_dir checkpoint_iter --S 150 --beam --topn 2
-    or  input_dir checkpoint_iter --S 1500 --topn 2
+        $input_dir $checkpoint_name --S 150 --beam --topn 2
+    or  $input_dir $checkpoint_name --S 1500 --topn 2
 
-    e.g. input_dir = inference_synthetic_N-1000, checkpoint_iter = 18600
+    e.g. input_dir = 'inference_synthetic_N-1000', checkpoint_name = 'NCP_18600'
 """
 
 import numpy as np
@@ -22,8 +22,8 @@ from ncpsort.utils.clustering import cluster_spikes_ncp, get_topn_clusters
 parser = argparse.ArgumentParser(description='Run NCP inference on spikes.')
 parser.add_argument('input_dir', type=str,
                     help="name of the directory that stores the generated data.") 
-parser.add_argument('checkpoint_iter', type=int,
-                    help="the final iteration of the trained model checkpoint.")
+parser.add_argument('checkpoint_name', type=str,
+                    help="the file name of the trained model checkpoint.")
 parser.add_argument('--S', type=int, default=150,
                     help="number of parallel samples (clustering runs).")
 parser.add_argument('--beam', action='store_const', default=False, const=True,
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     it_use = args.checkpoint_iter
-    pretrained_path = "./saved_models/{}_{}.pt".format(params['model'], it_use)
+    pretrained_path = "./saved_models/{}.pt".format(args.checkpoint_name)
 
     input_dir = args.input_dir
     if not os.path.isdir(input_dir):
