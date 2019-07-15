@@ -15,10 +15,12 @@ Train NCP model using synthetic data:
 ```
 cd ncp-sort
 python -m ncpsort.train_ncp --n_iter 10000 
-(add --saved_checkpoint saved_models/{checkpoint}.pt for resuming from partially trained model
+
+# for resuming from partially trained model
+python -m ncpsort.train_ncp --n_iter 10000  --saved_checkpoint saved_models/{checkpoint}.pt 
 ```
 
-Run inference (probablistic clustering) on synthetic data:
+Run probablistic clustering on synthetic data:
 ```
 # generate synthetic dataset
 python -m ncpsort.cluster_synthetic_data.generate_synthetic_data \
@@ -31,7 +33,7 @@ python -m ncpsort.cluster_synthetic_data.inference_ncp_synthetic \
         --S 150 --beam --topn 2
 ```
 
-Run inference (probablistic clustering) on real data:
+Run probablistic clustering on real data:
 ```
 #subset spikes from large recording data
 python -m ncpsort.cluster_real_data.generate_data \
