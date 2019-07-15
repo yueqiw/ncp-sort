@@ -2,8 +2,10 @@
 """Generate synthetic datasets for clustering
 Usage:
     python -m ncpsort.cluster_synthetic_data.generate_synthetic_data \
-        output_dir (e.g. inference_synthetic)
+        $output_dir
         --N 1000 --n_seeds 10
+
+    e.g. $output_dir='inference_synthetic'
 """
 
 import numpy as np

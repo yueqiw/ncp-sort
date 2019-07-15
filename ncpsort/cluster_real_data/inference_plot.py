@@ -2,9 +2,9 @@
 """Plot clustered spikes
 Usage:
     python ncpsort.cluster_real_data.inference_plot \
-        inference_dir --min_cls_size 50 --n_seeds 1 --plot_mfm --plot_type overlay
+        $inference_dir --min_cls_size 50 --n_seeds 1 --plot_mfm --plot_type overlay
     python ncpsort.cluster_real_data.inference_plot \
-        inference_dir --min_cls_size 50 --n_seeds 1 --plot_mfm --plot_type tsne
+        $inference_dir --min_cls_size 50 --n_seeds 1 --plot_mfm --plot_type tsne
 """
 
 import numpy as np
@@ -12,7 +12,7 @@ import torch
 import time
 import json 
 import argparse
-import sys, os 
+import os 
 from ncpsort.utils.spike_utils import get_chan_nbrs, select_template_channels, template_window
 from ncpsort.utils.plotting import DEFAULT_COLORS
 from ncpsort.utils.plotting import plot_spike_clusters_and_gt_in_rows

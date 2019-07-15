@@ -4,7 +4,7 @@ Usage:
     python -m ncpsort.cluster_real_data.inference_encoder_only \
         $input_dir $checkpoint_name 
 
-    e.g. input_dir = 'inference_real_data_N-1000_pad', checkpoint_name = 'NCP_18600'
+    e.g. input_dir='inference_real_data_N-1000_pad', checkpoint_name='NCP_18600'
 """
 
 import numpy as np

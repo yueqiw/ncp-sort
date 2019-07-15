@@ -5,7 +5,7 @@ Usage:
         $input_dir $checkpoint_name --S 150 --beam --topn 2
     or  $input_dir $checkpoint_name --S 1500 --topn 2
 
-    e.g. input_dir = 'inference_real_data_N-1000_pad', checkpoint_name = 'NCP_18600'
+    e.g. input_dir='inference_real_data_N-1000_pad', checkpoint_name='NCP_18600'
 """
 
 import numpy as np

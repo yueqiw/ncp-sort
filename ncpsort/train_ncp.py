@@ -2,6 +2,7 @@
 '''Train NCP model on synthetic data 
 Usage:
     python -m ncpsort.train_ncp --n_iter 10000
+    or 
     python -m ncpsort.train_ncp --n_iter 10000 --saved_checkpoint saved_models/NCP_5000.pt
 '''
 

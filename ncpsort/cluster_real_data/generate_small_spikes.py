@@ -2,10 +2,12 @@
 """Generate real data subsets (small spikes) for clustering 
 Usage:
     python -m ncpsort.cluster_real_data.generate_small_spikes \
-        output_dir (e.g. inference_small_spikes)
+        $output_dir
         --N 1000 --n_seeds 1 --do_corner_padding
     or  --channel_end_idx 1000 --do_corner_padding
     or  --global_end_idx 90781 (one minute) --do_corner_padding
+
+    e.g. output_dir='inference_small_spikes'
 """
 
 import numpy as np

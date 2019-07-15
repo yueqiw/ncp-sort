@@ -2,9 +2,9 @@
 """Plot clustered spikes
 Usage:
     python ncpsort.cluster_synthetic_data.inference_plot_synthetic \
-        inference_dir --min_cls_size 50 --plot_mfm --plot_type overlay
+        $inference_dir --min_cls_size 50 --plot_mfm --plot_type overlay
     python ncpsort.cluster_synthetic_data.inference_plot_synthetic \
-        inference_dir --min_cls_size 50 --plot_mfm --plot_type tsne
+        $inference_dir --min_cls_size 50 --plot_mfm --plot_type tsne
 """
 
 import numpy as np
