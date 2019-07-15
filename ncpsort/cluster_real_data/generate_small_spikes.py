@@ -2,12 +2,11 @@
 """Generate real data subsets (small spikes) for clustering 
 Usage:
     python -m ncpsort.cluster_real_data.generate_small_spikes \
-        $output_dir
+        --output_dir inference_small_spikes \
         --N 1000 --n_seeds 1 --do_corner_padding
+
     or  --channel_end_idx 1000 --do_corner_padding
     or  --global_end_idx 90781 (one minute) --do_corner_padding
-
-    e.g. output_dir='inference_small_spikes'
 """
 
 import numpy as np
@@ -20,7 +19,7 @@ from ncpsort.utils.spike_utils import get_chan_nbrs, subset_spike_time_by_channe
 
 parser = argparse.ArgumentParser(
     description='Generate spike data for NCP inference.')
-parser.add_argument('output_dir', type=str,
+parser.add_argument('--output_dir', type=str, default='inference_small_spikes',
                     help="name of the directory that stores the generated data.")
 parser.add_argument('--N', type=int, default=0,
                     help="how many spikes to subset from the data source. If n=0, extract all spikes")

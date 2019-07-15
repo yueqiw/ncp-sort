@@ -2,9 +2,10 @@
 """Plot clustered spikes
 Usage:
     python ncpsort.cluster_synthetic_data.inference_plot_synthetic \
-        $inference_dir --min_cls_size 50 --plot_mfm --plot_type overlay
-    python ncpsort.cluster_synthetic_data.inference_plot_synthetic \
-        $inference_dir --min_cls_size 50 --plot_mfm --plot_type tsne
+        --inference_dir ./inference_synthetic_N-1000/cluster_S-150-beam_NCP-10000 \
+        --min_cls_size 50 --plot_type overlay
+
+    or  --inference_dir --min_cls_size 50 --plot_type tsne
 """
 
 import numpy as np
@@ -21,7 +22,7 @@ from ncpsort.utils.plotting import plot_raw_and_encoded_spikes_tsne
 
 
 parser = argparse.ArgumentParser(description='Plot inference results.')
-parser.add_argument('inference_dir', type=str)
+parser.add_argument('--inference_dir', type=str)
 parser.add_argument('--min_cls_size', type=int, default=0)
 parser.add_argument('--topn', type=int, default=1)
 parser.add_argument('--plot_mfm', action="store_const", const=True, default=False)

@@ -2,10 +2,11 @@
 """Perform inference (clustering) using a trained NCP model
 Usage:
     python -m ncpsort.cluster_real_data.inference_ncp \
-        $input_dir $checkpoint_name --S 150 --beam --topn 2
-    or  $input_dir $checkpoint_name --S 1500 --topn 2
-
-    e.g. input_dir='inference_real_data_N-1000_pad', checkpoint_name='NCP_18600'
+        --input_dir inference_real_data_N-1000_pad \
+        --model_file ./saved_models/NCP_10000.pt \
+        --S 150 --beam --topn 2
+    
+    or  --S 1500 --topn 2
 """
 
 import numpy as np
@@ -20,10 +21,10 @@ from ncpsort.models.sampler_model import NCP_Sampler
 from ncpsort.utils.clustering import cluster_spikes_ncp, get_topn_clusters
 
 parser = argparse.ArgumentParser(description='Run NCP inference on spikes.')
-parser.add_argument('input_dir', type=str,
-                    help="name of the directory that stores the generated data.")
-parser.add_argument('checkpoint_name', type=str,
-                    help="the file name of the trained model checkpoint.")
+parser.add_argument('--input_dir', type=str, default=None,
+                    help="(required) name of the directory that stores the generated data.")
+parser.add_argument('--model_file', type=str, default=None,
+                    help="(required) the file path of the trained model checkpoint.")
 parser.add_argument('--S', type=int, default=150,
                     help="number of parallel samples (clustering runs).")
 parser.add_argument('--beam', action='store_const', default=False, const=True,
@@ -35,8 +36,11 @@ parser.add_argument('--topn', type=int, default=2,
 if __name__ == "__main__":
     args = parser.parse_args()
 
-    it_use = args.checkpoint_iter
-    pretrained_path = "./saved_models/{}.pt".format(args.checkpoint_name)
+    if args.input_dir is None or args.model_file is None:
+        raise ValueError("please provide --input_dir and --model_file")
+
+    model_file = args.model_file
+    checkpoint_name = os.path.basename(model_file).strip(".pt")
 
     input_dir = args.input_dir
     if not os.path.isdir(input_dir):
@@ -48,8 +52,8 @@ if __name__ == "__main__":
     infer_params['use_beam'] = use_beam = args.beam
     beam_str = "-beam" if use_beam else ""
 
-    infer_params['inference_name'] = 'cluster_S-{}{}_it-{}'.format(
-        n_parallel_sample, beam_str, it_use)
+    infer_params['inference_name'] = 'cluster_S-{}{}_{}'.format(
+        n_parallel_sample, beam_str, model_file)
 
     # load model
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -57,7 +61,7 @@ if __name__ == "__main__":
 
     model = NCP_Trainer(params)
     checkpoint = torch.load(
-        pretrained_path, map_location="cuda:0" if torch.cuda.is_available() else "cpu")
+        model_file, map_location="cuda:0" if torch.cuda.is_available() else "cpu")
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
     model.eval()  # this is important for spike encoder

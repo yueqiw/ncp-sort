@@ -2,9 +2,8 @@
 """Run the spike encoder of a trained NCP model
 Usage:
     python -m ncpsort.cluster_real_data.inference_encoder_only \
-        $input_dir $checkpoint_name 
-
-    e.g. input_dir='inference_real_data_N-1000_pad', checkpoint_name='NCP_18600'
+        --input_dir inference_real_data_N-1000_pad \
+        --model_file ./saved_models/NCP_10000.pt
 """
 
 import numpy as np
@@ -18,16 +17,19 @@ from ncpsort.models.trainer_model import NCP_Trainer
 from ncpsort.models.spike_encoder import NCP_SpikeEncoder
 
 parser = argparse.ArgumentParser(description='Run NCP encoder on spikes.')
-parser.add_argument('input_dir', type=str,
-                    help="name of the directory that stores the generated data.")
-parser.add_argument('checkpoint_name', type=str,
-                    help="the file name of the trained model checkpoint.")
+parser.add_argument('--input_dir', type=str, default=None,
+                    help="(required) name of the directory that stores the generated data.")
+parser.add_argument('--model_file', type=str, default=None,
+                    help="(required) the file path of the trained model checkpoint.")
 
 if __name__ == "__main__":
     args = parser.parse_args()
 
-    it_use = args.checkpoint_iter
-    pretrained_path = "./saved_models/{}.pt".format(args.checkpoint_name)
+    if args.input_dir is None or args.model_file is None:
+        raise ValueError("please provide --input_dir and --model_file")
+
+    model_file = args.model_file
+    checkpoint_name = os.path.basename(model_file).strip(".pt")
 
     input_dir = args.input_dir
     if not os.path.isdir(input_dir):
@@ -35,14 +37,14 @@ if __name__ == "__main__":
     with open(os.path.join(input_dir, "data_params.json"), "r") as f:
         infer_params = json.load(f)
 
-    infer_params['encoder_name'] = 'spike_encoder_it-{}'.format(it_use)
+    infer_params['encoder_name'] = 'spike_encoder_{}'.format(model_file)
 
     # load model 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     params['device'] = device
 
     model = NCP_Trainer(params)
-    checkpoint = torch.load(pretrained_path, map_location="cuda:0" if torch.cuda.is_available() else "cpu")
+    checkpoint = torch.load(model_file, map_location="cuda:0" if torch.cuda.is_available() else "cpu")
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
     model.eval()  # this is important for spike encoder 
