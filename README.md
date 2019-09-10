@@ -7,30 +7,6 @@ https://arxiv.org/abs/1901.00409
 
 [2] The NCP algorithm: https://github.com/aripakman/neural_clustering_process
 
-## Results 
-
-<br/>
-
-<p align="center"> 
-<img src="assets/fig1.png">
-</p>
-
-<p align="center"> 
-Left: A detection module isolates multi-channel spike waveforms. The isolated waveforms are clustered by NCP. Right: Multiple sample cluster configurations from the NCP posterior, each indicating a visually plausible clustering of the data. 
-</p>
-
-<br/>
-
-<p align="center"> 
-<img src="assets/fig2.png">
-</p>
-
-<p align="center"> 
-2000 spike waveforms from real data are clustered by NCP compared to vGMFM (variational inference on Gaussian Mixture of Finite Mixtures). 
-</p>
-
-<br/>
-
 ## Code
 ```
 git clone https://github.com/yueqiw/ncp-sort.git
