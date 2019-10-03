@@ -1,11 +1,14 @@
 # Spike sorting using the Neural Clustering Process (NCP)
 
-This repo implements a spike sorting algorithm based on the Neural Clustering Process (NCP) [1,2], a recently introduced neural architecture that performs efficient amortized approximate Bayesian inference for probabilistic clustering. 
+This repo implements a spike sorting algorithm based on the Neural Clustering Process (NCP) [1,2,3], a recently introduced neural architecture that performs efficient amortized approximate Bayesian inference for probabilistic clustering. 
 
-[1] Ari Pakman, Yueqi Wang, Catalin Mitelut, JinHyung Lee, Liam Paninski, **Discrete Neural Processes**, arXiv:1901.00409 
+[1] Yueqi Wang, Ari Pakman, Catalin Mitelut, JinHyung Lee, Liam Paninski, **Spike Sorting using the Neural Clustering Process**, NeurIPS 2019 [Neuro AI Workshop](https://sites.google.com/mila.quebec/neuroaiworkshop) -- Real Neurons & Hidden Units: Future directions at the intersection of neuroscience
+and artificial intelligence.
+
+[2] Ari Pakman, Yueqi Wang, Catalin Mitelut, JinHyung Lee, Liam Paninski, **Discrete Neural Processes**, arXiv:1901.00409 
 https://arxiv.org/abs/1901.00409
 
-[2] The NCP algorithm: https://github.com/aripakman/neural_clustering_process
+[3] The NCP algorithm: https://github.com/aripakman/neural_clustering_process
 
 ## Code
 ```
