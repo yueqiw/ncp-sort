@@ -5,8 +5,7 @@ This repo implements a spike sorting algorithm based on the Neural Clustering Pr
 [1] Yueqi Wang, Ari Pakman, Catalin Mitelut, JinHyung Lee, Liam Paninski, [**Spike Sorting using the Neural Clustering Process**](https://openreview.net/forum?id=Byg1E7KIIr), NeurIPS 2019 [Neuro AI Workshop](https://sites.google.com/mila.quebec/neuroaiworkshop) -- Real Neurons & Hidden Units: Future directions at the intersection of neuroscience
 and artificial intelligence.
 
-[2] Ari Pakman, Yueqi Wang, Catalin Mitelut, JinHyung Lee, Liam Paninski, **Discrete Neural Processes**, arXiv:1901.00409 
-https://arxiv.org/abs/1901.00409
+[2] Ari Pakman, Yueqi Wang, Catalin Mitelut, JinHyung Lee, Liam Paninski, [**Neural Clustering Processes**](https://arxiv.org/abs/1901.00409), ICML 2020
 
 [3] The NCP algorithm: https://github.com/aripakman/neural_clustering_process
 
